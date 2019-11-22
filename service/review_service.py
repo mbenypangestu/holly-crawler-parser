@@ -22,6 +22,7 @@ from pymongo import MongoClient
 
 from .database_service import Database
 from utils.tripadvisor_component import TripadvisorComponent
+from kafka_provider.producer import CustomKafkaProducer
 
 
 class ReviewService(Database):
@@ -49,13 +50,7 @@ class ReviewService(Database):
 
         print(url)
 
-        producer = Producer({
-            'bootstrap.servers': 'localhost:9092',
-            'queue.buffering.max.messages': 1000000,
-            'queue.buffering.max.ms': 500,
-            'batch.num.messages': 50,
-            'default.topic.config': {'acks': 'all'}
-        })
+        producer = CustomKafkaProducer()
 
         while next == True:
             try:
@@ -86,8 +81,8 @@ class ReviewService(Database):
                             }
 
                             self.db.review.insert_one(reviewCreateData)
-                            producer.produce(
-                                "reviews", dumps(reviewCreateData))
+                            producer.publish(
+                                "reviews", "review", reviewCreateData)
 
                             print("Success saving review - ",
                                   reviewCreateData['id'])

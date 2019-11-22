@@ -86,7 +86,6 @@ class HotelService(Database):
 
                             reviewService.create_many(hotelByObjectID)
 
-                        break
                 else:
                     print("There is no hotels data from location ID : ", loc_id)
 

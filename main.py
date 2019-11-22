@@ -55,7 +55,6 @@ class Spider(Database):
 
 
 def handle_dr(err, msg):
-    # Neither message payloads must not affect the error string.
     assert err is not None
     assert err.code() == KafkaError._MSG_TIMED_OUT
     assert "Message timed out" in err.str()
