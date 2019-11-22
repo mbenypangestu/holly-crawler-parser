@@ -25,18 +25,6 @@ from service.hotel_service import HotelService
 from service.database_service import Database
 
 
-class CustomKafkaProducer:
-    producer = Producer({'bootstrap.servers': 'localhost'})
-
-    def __init__(self):
-        self.producer = Producer({'bootstrap.servers': 'localhost:9092'})
-
-    def publish(self, topic, key, value):
-        self.producer.produce(topic, key, json.dumps(
-            value, separators=(',', ':')))
-        self.producer.flush()
-
-
 class Spider(Database):
     def __init__(self):
         super().__init__()
