@@ -1,0 +1,5 @@
+bson 
+pymongo 
+kafka 
+confluent_kafka 
+mongoengine
