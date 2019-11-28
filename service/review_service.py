@@ -67,25 +67,25 @@ class ReviewService(Database):
                           hotel['name'], " : ", len(reviews))
 
                     for x, review in enumerate(reviews):
-                        is_reviewexist = self.is_review_exist(review["id"])
-                        if is_reviewexist:
-                            print("Review = ", review['name'],
-                                  " is already exist !")
-                        else:
-                            reviewCreateData = {
-                                **review,
-                                'hotel': DBRef(collection="hotel", id=hotelID),
-                                'hotel_locationID': hotel_locId,
-                                'hotel_ObjectId': hotelID,
-                                'created_at': datetime.now()
-                            }
+                        # is_reviewexist = self.is_review_exist(review["id"])
+                        # if is_reviewexist:
+                        #     print("Review = ", review['name'],
+                        #           " is already exist !")
+                        # else:
+                        reviewCreateData = {
+                            **review,
+                            'hotel': DBRef(collection="hotel", id=hotelID),
+                            'hotel_locationID': hotel_locId,
+                            'hotel_ObjectId': hotelID,
+                            'created_at': datetime.now()
+                        }
 
-                            self.db.review.insert_one(reviewCreateData)
-                            producer.publish(
-                                "reviews", "review", reviewCreateData)
+                        self.db.review.insert_one(reviewCreateData)
+                        producer.publish(
+                            "reviews", "review", reviewCreateData)
 
-                            print("Success saving review - ",
-                                  reviewCreateData['id'])
+                        print("Success saving review - ",
+                              reviewCreateData['id'])
 
                 else:
                     print("There is no Reviews data from Hotel ID : ", hotelID)
